@@ -13,14 +13,33 @@ public class QueenBoard {
 	//number is the amount to add to each cell
 	/* Will affect every row, col, and diag, but will leave inputted space
 	alone */
+	/*
+	positive diag: +/- n-1
+	neg diag: +/- n+1
+	horiz: 1
+	vert: n
+	*/
+	//only works on square boards
+	private void cleanerModify(int row, int col) {
+		int original = board.length*row + col;
+		int counter = original;
+		
+		
+		//horizontal
+		counter -= col;
+		while(counter != board.length*row + 1) {
+			board[counter%
+		}
+	}
+	
 	private void modify(int row, int col, int number) {
 		//check the columns in row
 		for (int x = 0; x < board.length; x++) {
-			if ( (x != col && board[row][x] == -1) ||
+			/*if ( (x != col && board[row][x] == -1) ||
 				(x != row && board[x][col] == -1) ) {
 				System.out.println(this);
 				throw new IllegalStateException("y dis neg");
-			}
+			}*/
 			
 			//modify the columns in row
 			if (board[row][x] != -1) {
@@ -77,13 +96,14 @@ public class QueenBoard {
 		board[row][col] = 0;
 	}
 	
-	private boolean recursiveSolve(int row, int numQueens) {
-		if (row == board.length) return numQueens == board.length;
+	private boolean recursiveSolve(int numQueens) {
+		//assert row == numQueens;
+		if (numQueens == board.length) return numQueens == board.length;
 		else {
 			for(int elem = 0; elem < board.length; elem++) {
-				if (addQueen(row, elem)) {
-					if (recursiveSolve(row+1, numQueens+1)) return true;
-					remQueen(row, elem);
+				if (addQueen(numQueens, elem)) {
+					if (recursiveSolve(numQueens+1)) return true;
+					remQueen(numQueens, elem);
 				}
 			}
 			return false;
@@ -91,7 +111,7 @@ public class QueenBoard {
 	}
 	
 	public boolean solve() {
-		return recursiveSolve(0, 0);
+		return recursiveSolve(0);
 	}
 	
 	public boolean recursiveCount(int row, int numQueens) {
