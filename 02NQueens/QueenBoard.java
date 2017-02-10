@@ -96,12 +96,17 @@ public class QueenBoard {
 	
 	public boolean recursiveCount(int row, int numQueens) {
 		boolean solFound = false;
-		if (row == board.length) return numQueens == board.length;
+		if (row == board.length) {
+			if (numQueens == board.length) {
+				mSolutions++;
+				return true;
+			}
+			return false;
+		}
 		else {
 			for(int elem = 0; elem < board.length; elem++) {
 				if (addQueen(row, elem)) {
 					if (recursiveCount(row+1, numQueens+1)) {
-						mSolutions++;
 						solFound = true;
 					}
 					remQueen(row, elem);
@@ -114,6 +119,7 @@ public class QueenBoard {
 	public boolean countSolutions() {
 		board = new int[board.length][board.length];
 		mCountSolRan = true;
+		mSolutions = 0;
 		return recursiveCount(0, 0);
 	}
 	
@@ -190,6 +196,14 @@ public class QueenBoard {
 		System.out.println();
 		
 		q = new QueenBoard(4);
+		q.solve();
+		System.out.println(q);
+		
+		q.countSolutions();
+		System.out.println(q.getCount());
+		System.out.println();
+		
+		q = new QueenBoard(8);
 		q.solve();
 		System.out.println(q);
 		
