@@ -1,10 +1,12 @@
 public class QueenBoard {
 	private int[][] board;
 	private int mSolutions;
+	private boolean mCountSolRan;
 	
 	public QueenBoard(int size) {
 		board = new int[size][size];
-		mSolutions = -1;
+		mSolutions = 0;
+		mCountSolRan = false;
 		//board[0][0] = 1;
 	}
 	
@@ -92,11 +94,31 @@ public class QueenBoard {
 		return recursiveSolve(0, 0);
 	}
 	
+	public boolean recursiveCount(int row, int numQueens) {
+		boolean solFound = false;
+		if (row == board.length) return numQueens == board.length;
+		else {
+			for(int elem = 0; elem < board.length; elem++) {
+				if (addQueen(row, elem)) {
+					if (recursiveCount(row+1, numQueens+1)) {
+						mSolutions++;
+						solFound = true;
+					}
+					remQueen(row, elem);
+				}
+			}
+			return solFound;
+		}
+	}
+	
 	public boolean countSolutions() {
-		return true;
+		board = new int[board.length][board.length];
+		mCountSolRan = true;
+		return recursiveCount(0, 0);
 	}
 	
 	public int getCount() {
+		if (!mCountSolRan) return -1;
 		return mSolutions;
 	}
 	
@@ -113,7 +135,7 @@ public class QueenBoard {
 	}
 	
 	public static void main(String args[]) {
-		QueenBoard q = new QueenBoard(8);
+		QueenBoard q = new QueenBoard(1);
 		//System.out.println(q);
 		/*q.addQueen(0, 0);
 		System.out.println(q);
@@ -141,7 +163,38 @@ public class QueenBoard {
 		System.out.println("modif");
 		q.remQueen(2, 1);
 		System.out.println(q);*/
+		
+		
+		q = new QueenBoard(1);
 		q.solve();
 		System.out.println(q);
+		
+		q.countSolutions();
+		System.out.println(q.getCount());
+		System.out.println();
+		
+		q = new QueenBoard(3);
+		q.solve();
+		System.out.println(q);
+		
+		q.countSolutions();
+		System.out.println(q.getCount());
+		System.out.println();
+		
+		q = new QueenBoard(2);
+		q.solve();
+		System.out.println(q);
+		
+		q.countSolutions();
+		System.out.println(q.getCount());
+		System.out.println();
+		
+		q = new QueenBoard(4);
+		q.solve();
+		System.out.println(q);
+		
+		q.countSolutions();
+		System.out.println(q.getCount());
+		System.out.println();
 	}
 }
