@@ -20,7 +20,7 @@ public class QueenBoard {
 	vert: n
 	*/
 	//only works on square boards
-	private void cleanerModify(int row, int col) {
+	/*private void cleanerModify(int row, int col) {
 		int original = board.length*row + col;
 		int counter = original;
 		
@@ -30,7 +30,7 @@ public class QueenBoard {
 		while(counter != board.length*row + 1) {
 			board[counter%
 		}
-	}
+	}*/
 	
 	private void modify(int row, int col, int number) {
 		//check the columns in row
