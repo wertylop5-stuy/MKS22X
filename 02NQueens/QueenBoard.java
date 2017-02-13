@@ -100,6 +100,7 @@ public class QueenBoard {
 		//assert row == numQueens;
 		if (numQueens == board.length) return numQueens == board.length;
 		else {
+			int temp = numQueens;
 			for(int elem = 0; elem < board.length; elem++) {
 				if (addQueen(numQueens, elem)) {
 					if (recursiveSolve(numQueens+1)) return true;
@@ -111,36 +112,35 @@ public class QueenBoard {
 	}
 	
 	public void solve() {
+		board = new int[board.length][board.length];
 		recursiveSolve(0);
 	}
 	
-	private boolean recursiveCount(int row, int numQueens) {
+	private boolean recursiveCount(int numQueens) {
 		boolean solFound = false;
-		if (row == board.length) {
-			if (numQueens == board.length) {
-				mSolutions++;
-				return true;
-			}
-			return false;
+		if (numQueens == board.length) {
+			mSolutions++;
+			return true;
 		}
-		else {
-			for(int elem = 0; elem < board.length; elem++) {
-				if (addQueen(row, elem)) {
-					if (recursiveCount(row+1, numQueens+1)) {
-						solFound = true;
-					}
-					remQueen(row, elem);
+		//else return false;
+		
+		int temp = numQueens;
+		for(int elem = 0; elem < board.length; elem++) {
+			if (addQueen(numQueens, elem)) {
+				if (recursiveCount(numQueens+1)) {
+					solFound = true;
 				}
+				remQueen(numQueens, elem);
 			}
-			return solFound;
 		}
+		return solFound;
 	}
 	
 	public void countSolutions() {
 		board = new int[board.length][board.length];
 		mCountSolRan = true;
 		mSolutions = 0;
-		recursiveCount(0, 0);
+		recursiveCount(0);
 	}
 	
 	public int getCount() {
