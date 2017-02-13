@@ -110,11 +110,11 @@ public class QueenBoard {
 		}
 	}
 	
-	public boolean solve() {
-		return recursiveSolve(0);
+	public void solve() {
+		recursiveSolve(0);
 	}
 	
-	public boolean recursiveCount(int row, int numQueens) {
+	private boolean recursiveCount(int row, int numQueens) {
 		boolean solFound = false;
 		if (row == board.length) {
 			if (numQueens == board.length) {
@@ -136,11 +136,11 @@ public class QueenBoard {
 		}
 	}
 	
-	public boolean countSolutions() {
+	public void countSolutions() {
 		board = new int[board.length][board.length];
 		mCountSolRan = true;
 		mSolutions = 0;
-		return recursiveCount(0, 0);
+		recursiveCount(0, 0);
 	}
 	
 	public int getCount() {
