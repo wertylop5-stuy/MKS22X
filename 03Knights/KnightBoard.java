@@ -37,6 +37,11 @@ public class KnightBoard {
 		}
 		return res;
 	}
+	//note: 0 is empty, start counting at 1
+	private boolean addK(int pos){
+		if (board[pos/mRows][pos%mRows] != 0)
+	}
+	private boolean remK(){}
 	
 	private boolean solveH(int pos, int level) {
 		if (level == mRows*mCols) return true;
