@@ -11,7 +11,8 @@ public class KnightBoard {
 		mDirections = initValues();
 	}
 	
-	/*private enum DirectionE {
+	//rip in peace lmao
+	/*private enum Direction {
 		ONE(-2, -mCols),
 		TWO(-1, -2*mCols),
 		THREE(1, -2*mCols),
@@ -47,15 +48,16 @@ public class KnightBoard {
 	}
 	
 	private Direction[] initValues() {
-		Direction[] res = new Direction[8];
-		res[0] = new Direction(-2,   -mCols);
-		res[1] = new Direction(-1, -2*mCols);
-		res[2] = new Direction( 1, -2*mCols);
-		res[3] = new Direction( 2,   -mCols);
-		res[4] = new Direction( 2,    mCols);
-		res[5] = new Direction( 1,  2*mCols);
-		res[6] = new Direction(-1,  2*mCols);
-		res[7] = new Direction(-2,    mCols);
+		Direction[] res = {
+			new Direction(-2,   -mCols),
+			new Direction(-1, -2*mCols),
+			new Direction( 1, -2*mCols),
+			new Direction( 2,   -mCols),
+			new Direction( 2,    mCols),
+			new Direction( 1,  2*mCols),
+			new Direction(-1,  2*mCols),
+			new Direction(-2,    mCols)
+		};
 		return res;
 	}
 	
@@ -69,7 +71,7 @@ public class KnightBoard {
 		}
 		return res;
 	}
-	//note: 0 is empty, start counting at 1
+	
 	private boolean addK(int pos, int val) {
 		if (board[pos/mCols][pos%mCols] == 0) {
 			board[pos/mCols][pos%mCols] = val;
@@ -88,24 +90,22 @@ public class KnightBoard {
 	private boolean isValidMove(int pos, Direction d) {
 		int xPos = (pos % mCols) + d.deltaX();
 		int yPos = (pos + d.deltaY()) / mCols;
-		//System.out.println(pos + ": " + xPos + ", " + yPos);
+		
 		if (xPos >= mCols || xPos < 0) return false;
 		if (yPos >= mRows || yPos < 0) return false;
 		return true;
 	}
 	
-	//wraparound is an issue
 	private boolean solveH(int pos, int level) {
 		if (level > mRows*mCols) return true;
 		else {
 			int temp;
 			for (Direction d : mDirections) {
-				//System.out.println(pos);
-				//System.out.println(isValidMove(pos, d));
 				if (!isValidMove(pos, d)) continue;
+				
 				temp = pos + d.deltaX() + d.deltaY();
 				if (temp >= 0 && temp < mRows*mCols &&
-					addK(pos, level)) {
+						addK(pos, level)) {
 					if (solveH(temp, level+1)) return true;
 					remK(pos);
 				}
@@ -114,6 +114,7 @@ public class KnightBoard {
 		}
 	}
 	
+	//note: 0 is empty, start counting at 1
 	public void solve() {
 		int x = 0;
 		while (x < mRows*mCols && !solveH(x, 1)) x++;
@@ -121,14 +122,8 @@ public class KnightBoard {
 	
 	public static void main(String args[]) {
 		KnightBoard k = new KnightBoard(6, 6);
-		//System.out.println(k);
-		/*for (Direction d : Direction.values()) {
-			System.out.println(d.deltaX() +" "+d.deltaY());
-		}*/
 		k.solve();
 		System.out.println(k);
-		//int temp = Direction.ONE.deltaX();
-		//System.out.println(temp);
 		
 		k = new KnightBoard(4,4);
 		k.solve();
@@ -139,3 +134,4 @@ public class KnightBoard {
 		System.out.println(k);
 	}
 }
+
