@@ -1,4 +1,4 @@
-public class KnightBoard2 {
+public class KnightBoard {
 	private int mRows;
 	private int mCols;
 	private int[][] board;
@@ -6,7 +6,7 @@ public class KnightBoard2 {
 	
 	private Direction[] mDirections;
 	
-	public KnightBoard2(int row, int col) {
+	public KnightBoard(int row, int col) {
 		mRows = row;
 		mCols = col;
 		board = new int[mRows][mCols];
@@ -20,11 +20,20 @@ public class KnightBoard2 {
 	go through each row, up to the midway point
 	within each row, try each possible move on each space?
 	if edge, stop at four or hit midway, reflect values
-	
+	at middle row, reflect all previous rows
 	*/
 	private int[][] genMoves() {
-		int res = new int[mRows][mCols];
+		int[][] res = new int[mRows][mCols];
 		//Possible moves are reflections across the board
+		for (int row = 0; row < Math.ceil(res.length/2.0); row++) {
+			for (int elem = 0;
+				elem < Math.ceil(row.length/2.0);
+				elem++)
+			{
+				if (!isValidMove(row*mcols+elem, d)
+					board[row][elem];
+			}
+		}
 		return res;
 	}
 	
@@ -115,16 +124,20 @@ public class KnightBoard2 {
 		while (x < mRows*mCols && !solveH(x, 1)) x++;
 	}
 	
+	public void solveFast() {
+		
+	}
+	
 	public static void main(String args[]) {
-		KnightBoard2 k = new KnightBoard2(6, 6);
+		KnightBoard k = new KnightBoard(6, 6);
 		k.solve();
 		System.out.println(k);
 		
-		/*k = new KnightBoard2(4,4);
+		/*k = new KnightBoard(4,4);
 		k.solve();
 		System.out.println(k);
 		
-		k = new KnightBoard2(3,4);
+		k = new KnightBoard(3,4);
 		k.solve();
 		System.out.println(k);*/
 	}
