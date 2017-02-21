@@ -1,3 +1,8 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
+
 public class KnightBoard {
 	private int mRows;
 	private int mCols;
@@ -48,8 +53,6 @@ public class KnightBoard {
 			}
 		}
 		
-		
-		
 		//reflect the top half of board
 		int offset = 0;
 		while(0+offset < mRows-1-offset) {
@@ -60,12 +63,12 @@ public class KnightBoard {
 			offset++;
 		}
 		
-		for (int[] row : res) {
+		/*for (int[] row : res) {
 			for (int e : row) {
 				System.out.print(e + " ");
 			}
 			System.out.println();
-		}
+		}*/
 		
 		return res;
 	}
@@ -155,18 +158,83 @@ public class KnightBoard {
 		}
 	}
 	
+	//POJO for storing possible moves on a single space
+	private class SpacePair {
+		private int mPossMove;
+		private int mPos;
+		
+		SpacePair(int a, int b) {
+			mPos = a;
+			mPossMove = b;
+		}
+		
+		public int getPossMove() { return mPossMove; }
+		public int getPos() { return mPos; }
+	}
+	
+	private boolean solveFH(int pos, int level) {
+		if (level > mRows*mCols) return true;
+		else {
+			possMoves[pos/mCols][pos%mCols]--;
+			int temp;
+			List<SpacePair> goodMoves= new ArrayList<>();
+			for (Direction d : mDirections) {
+				if (!isValidMove(pos, d)) continue;
+				
+				temp = pos + d.deltaX() + d.deltaY();
+				if (temp >= 0 && temp < mRows*mCols) {
+					goodMoves.add(new SpacePair(
+						temp,
+						possMoves[temp/mCols][temp%mCols]));
+				}
+			}
+			//cuz java 7
+			goodMoves.sort(new Comparator<SpacePair>() {
+				@Override
+				public int compare(SpacePair o1, SpacePair o2) {
+					return o1.getPossMove() - o2.getPossMove();
+				}
+			});
+			
+			/*for (SpacePair s : goodMoves) {
+				System.out.print(s.getPossMove());
+			}
+			System.out.println();*/
+			
+			for (SpacePair s : goodMoves) {
+				if (addK(s.getPos(), level)) {
+					if (solveFH(s.getPos(), level+1)) return true;
+					remK(s.getPos());
+				}
+			}
+			
+			possMoves[pos/mCols][pos%mCols]++;
+			return false;
+		}
+	}
+	
 	//note: 0 is empty, start counting at 1
 	public void solve() {
+		board = new int[mRows][mCols];
+		
 		int x = 0;
 		while (x < mRows*mCols && !solveH(x, 1)) x++;
 	}
 	
 	public void solveFast() {
+		board = new int[mRows][mCols];
+		possMoves = genMoves();
 		
+		int x = 0;
+		while (x < mRows*mCols && !solveFH(x, 1)) System.out.println(x++);
+		//solveFH(mRows/2 + mCols/2, 1);
 	}
 	
 	public static void main(String args[]) {
-		KnightBoard k = new KnightBoard(4, 3);
+		KnightBoard k = new KnightBoard(15, 12);
+		k.solveFast();
+		//System.out.println(k);
+		
 		//k.solve();
 		//System.out.println(k);
 		
