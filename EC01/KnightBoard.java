@@ -32,9 +32,12 @@ public class KnightBoard {
 			{
 				for (Direction d : mDirections) {
 					//set init values for possible moves
+					//System.out.println(isValidMove(row*mCols+elem, d));
 					if (isValidMove(row*mCols+elem, d))
 						res[row][elem]++;
+					
 				}
+				//System.out.println("\n\n");
 			}
 			
 			//reflect value in the row
@@ -123,10 +126,14 @@ public class KnightBoard {
 	
 	private boolean isValidMove(int pos, Direction d) {
 		int xPos = (pos % mCols) + d.deltaX();
-		int yPos = (pos + d.deltaY()) / mCols;
+		double yPos = (pos + d.deltaY()) * 1.0 / mCols;
+		
+		//System.out.println(xPos + ", " + yPos);
 		
 		if (xPos >= mCols || xPos < 0) return false;
 		if (yPos >= mRows || yPos < 0) return false;
+		
+		
 		return true;
 	}
 	
@@ -159,9 +166,9 @@ public class KnightBoard {
 	}
 	
 	public static void main(String args[]) {
-		KnightBoard k = new KnightBoard(4, 4);
-		k.solve();
-		System.out.println(k);
+		KnightBoard k = new KnightBoard(4, 3);
+		//k.solve();
+		//System.out.println(k);
 		
 		/*k = new KnightBoard(4,4);
 		k.solve();
