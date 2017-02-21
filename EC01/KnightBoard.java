@@ -10,8 +10,8 @@ public class KnightBoard {
 		mRows = row;
 		mCols = col;
 		board = new int[mRows][mCols];
-		possMoves = genMoves();
 		mDirections = initValues();
+		possMoves = genMoves();
 	}
 	
 	/*
@@ -25,15 +25,45 @@ public class KnightBoard {
 	private int[][] genMoves() {
 		int[][] res = new int[mRows][mCols];
 		//Possible moves are reflections across the board
-		for (int row = 0; row < Math.ceil(res.length/2.0); row++) {
+		for (int row = 0; row < Math.ceil(mRows/2.0); row++) {
 			for (int elem = 0;
-				elem < Math.ceil(row.length/2.0);
+				elem < Math.ceil(mCols/2.0);
 				elem++)
 			{
-				if (!isValidMove(row*mcols+elem, d)
-					board[row][elem];
+				for (Direction d : mDirections) {
+					//set init values for possible moves
+					if (isValidMove(row*mCols+elem, d))
+						res[row][elem]++;
+				}
+			}
+			
+			//reflect value in the row
+			int offset = 0;
+			while (0+offset < mCols-1-offset) {
+				res[row][mCols-1-offset] = res[row][0+offset];
+				offset++;
 			}
 		}
+		
+		
+		
+		//reflect the top half of board
+		int offset = 0;
+		while(0+offset < mRows-1-offset) {
+			System.arraycopy(res[0+offset], 0,
+				res[mRows-1-offset],
+				0,
+				mCols);
+			offset++;
+		}
+		
+		for (int[] row : res) {
+			for (int e : row) {
+				System.out.print(e + " ");
+			}
+			System.out.println();
+		}
+		
 		return res;
 	}
 	
@@ -129,7 +159,7 @@ public class KnightBoard {
 	}
 	
 	public static void main(String args[]) {
-		KnightBoard k = new KnightBoard(6, 6);
+		KnightBoard k = new KnightBoard(4, 4);
 		k.solve();
 		System.out.println(k);
 		
