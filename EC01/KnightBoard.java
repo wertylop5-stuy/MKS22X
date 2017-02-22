@@ -73,50 +73,6 @@ public class KnightBoard {
 		return res;
 	}
 	
-	//enums are static :'(
-	/*private class Direction {
-		private int xDir;
-		private int yDir;
-		
-		Direction(int x, int y) {
-			xDir = x;
-			yDir = y;
-		}
-		
-		public int deltaX() { return xDir; }
-		public int deltaY() { return yDir; }
-	}*/
-	
-	/*private Direction[] initValues() {
-		Direction[] res = {
-			new Direction(-2,   -mCols),
-			new Direction(-1, -2*mCols),
-			new Direction( 1, -2*mCols),
-			new Direction( 2,   -mCols),
-			new Direction( 2,    mCols),
-			new Direction( 1,  2*mCols),
-			new Direction(-1,  2*mCols),
-			new Direction(-2,    mCols)
-		};
-		return res;
-	}*/
-	
-	/*private Direction[] initValues() {
-		Direction[] res = {
-			
-			
-			new Direction( 1, -2*mCols),
-			new Direction( 2,   -mCols),
-			new Direction( 2,    mCols),
-			new Direction( 1,  2*mCols),
-			new Direction(-1,  2*mCols),
-			new Direction(-2,    mCols),
-			new Direction(-2,   -mCols),
-			new Direction(-1, -2*mCols)
-		};
-		return res;
-	}*/
-	
 	//Array accessing is faster?
 	private int[][] initValues() {
 		int[][] res = {
@@ -138,7 +94,7 @@ public class KnightBoard {
 		String res = "";
 		for (int[] row : board) {
 			for (int x : row) {
-				res += String.format("%3d", x);
+				res += String.format("%4d", x);
 			}
 			res += "\n";
 		}
@@ -213,7 +169,8 @@ public class KnightBoard {
 		//System.out.println(level);
 		if (level > mRows*mCols) return true;
 		else {
-			possMoves[pos/mCols][pos%mCols]--;
+			if (!addK(pos, level)) return false;
+			//possMoves[pos/mCols][pos%mCols]--;
 			
 			int temp;
 			int[] d;
@@ -225,6 +182,7 @@ public class KnightBoard {
 				
 				temp = pos + d[0] + d[1];
 				if (temp >= 0 && temp < mRows*mCols) {
+					possMoves[temp/mCols][temp%mCols]--;
 					goodMoves.add(new SpacePair(
 						temp,
 						possMoves[temp/mCols][temp%mCols],
@@ -244,15 +202,13 @@ public class KnightBoard {
 			}
 			System.out.println();*/
 			
-			//This is the reason why it doesn't start at corner
 			for (SpacePair s : goodMoves) {
-				if (addK(pos, level)) {
-					if (solveFH(s.getPos(), level+1)) return true;
-					remK(pos);
-				}
+				if (solveFH(s.getPos(), level+1)) return true;
+				possMoves[s.getPos()/mCols][s.getPos()%mCols]++;
 			}
 			
-			possMoves[pos/mCols][pos%mCols]++;
+			remK(pos);
+			//possMoves[pos/mCols][pos%mCols]++;
 			return false;
 		}
 	}
@@ -261,15 +217,16 @@ public class KnightBoard {
 	public void solve() {
 		board = new int[mRows][mCols];
 		
-		int x = 0;
-		while (x < mRows*mCols && !solveH(x, 1)) x++;
+		//int x = 0;
+		//while (x < mRows*mCols && !solveH(x, 1)) x++;
+		solveH(0, 1);
 	}
 	
 	public void solveFast() {
 		board = new int[mRows][mCols];
 		possMoves = genMoves();
 		
-		int x = 0;
+		//int x = 0;
 		//while (x < mRows*mCols && !solveFH(x, 1)) System.out.println(x++);
 		//solveFH(mRows*mRows/2 + mCols/2, 1);
 		solveFH(0, 1);
@@ -291,14 +248,6 @@ public class KnightBoard {
 			k.solveH(0, 1);
 			System.out.println(k);
 		}
-		
-		/*k = new KnightBoard(4,4);
-		k.solve();
-		System.out.println(k);
-		
-		k = new KnightBoard(3,4);
-		k.solve();
-		System.out.println(k);*/
 	}
 }
 
