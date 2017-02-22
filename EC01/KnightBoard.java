@@ -9,7 +9,7 @@ public class KnightBoard {
 	private int[][] board;
 	private int[][] possMoves;	//Possible moves for each spot
 	
-	private Direction[] mDirections;
+	private int[][] mDirections;
 	
 	public KnightBoard(int row, int col) {
 		mRows = row;
@@ -21,7 +21,7 @@ public class KnightBoard {
 	
 	/*
 	Strategy:
-	init all values with 8
+	init all values with 0
 	go through each row, up to the midway point
 	within each row, try each possible move on each space?
 	if edge, stop at four or hit midway, reflect values
@@ -35,10 +35,10 @@ public class KnightBoard {
 				elem < Math.ceil(mCols/2.0);
 				elem++)
 			{
-				for (Direction d : mDirections) {
+				for (int x = 0; x < 8; x++) {
 					//set init values for possible moves
 					//System.out.println(isValidMove(row*mCols+elem, d));
-					if (isValidMove(row*mCols+elem, d))
+					if (isValidMove(row*mCols+elem, mDirections[x]))
 						res[row][elem]++;
 					
 				}
@@ -74,7 +74,7 @@ public class KnightBoard {
 	}
 	
 	//enums are static :'(
-	private class Direction {
+	/*private class Direction {
 		private int xDir;
 		private int yDir;
 		
@@ -85,9 +85,9 @@ public class KnightBoard {
 		
 		public int deltaX() { return xDir; }
 		public int deltaY() { return yDir; }
-	}
+	}*/
 	
-	private Direction[] initValues() {
+	/*private Direction[] initValues() {
 		Direction[] res = {
 			new Direction(-2,   -mCols),
 			new Direction(-1, -2*mCols),
@@ -99,8 +99,41 @@ public class KnightBoard {
 			new Direction(-2,    mCols)
 		};
 		return res;
+	}*/
+	
+	/*private Direction[] initValues() {
+		Direction[] res = {
+			
+			
+			new Direction( 1, -2*mCols),
+			new Direction( 2,   -mCols),
+			new Direction( 2,    mCols),
+			new Direction( 1,  2*mCols),
+			new Direction(-1,  2*mCols),
+			new Direction(-2,    mCols),
+			new Direction(-2,   -mCols),
+			new Direction(-1, -2*mCols)
+		};
+		return res;
+	}*/
+	
+	//Array accessing is faster?
+	private int[][] initValues() {
+		int[][] res = {
+			{ 1, -2*mCols},
+			{ 2,   -mCols},
+			{ 2,    mCols},
+			{ 1,  2*mCols},
+			{-1,  2*mCols},
+			{-2,    mCols},
+			{-2,   -mCols},
+			{-1, -2*mCols}
+		};
+		return res;
 	}
 	
+	
+	@Override
 	public String toString() {
 		String res = "";
 		for (int[] row : board) {
@@ -127,27 +160,24 @@ public class KnightBoard {
 		return false;
 	}
 	
-	private boolean isValidMove(int pos, Direction d) {
-		int xPos = (pos % mCols) + d.deltaX();
-		double yPos = (pos + d.deltaY()) * 1.0 / mCols;
+	private boolean isValidMove(int pos, int[] d) {
+		int xPos = (pos % mCols) + d[0];
+		double yPos = (pos + d[1]) * 1.0 / mCols;
 		
 		//System.out.println(xPos + ", " + yPos);
 		
-		if (xPos >= mCols || xPos < 0) return false;
-		if (yPos >= mRows || yPos < 0) return false;
-		
-		
-		return true;
+		return !( (xPos >= mCols || xPos < 0) ||
+				  (yPos >= mRows || yPos < 0) );
 	}
 	
 	private boolean solveH(int pos, int level) {
 		if (level > mRows*mCols) return true;
 		else {
 			int temp;
-			for (Direction d : mDirections) {
-				if (!isValidMove(pos, d)) continue;
+			for (int x = 0; x < 8; x++) {
+				if (!isValidMove(pos, mDirections[x])) continue;
 				
-				temp = pos + d.deltaX() + d.deltaY();
+				temp = pos + mDirections[x][0] + mDirections[x][1];
 				if (temp >= 0 && temp < mRows*mCols &&
 						addK(pos, level)) {
 					if (solveH(temp, level+1)) return true;
@@ -160,6 +190,7 @@ public class KnightBoard {
 	
 	//POJO for storing possible moves on a single space
 	private class SpacePair {
+		private int mId;
 		private int mPossMove;
 		private int mPos;
 		
@@ -168,24 +199,36 @@ public class KnightBoard {
 			mPossMove = b;
 		}
 		
+		SpacePair(int a, int b, int c) {
+			mPos = a;
+			mPossMove = b;
+			mId = c;
+		}
+		
 		public int getPossMove() { return mPossMove; }
 		public int getPos() { return mPos; }
 	}
 	
 	private boolean solveFH(int pos, int level) {
+		//System.out.println(level);
 		if (level > mRows*mCols) return true;
 		else {
 			possMoves[pos/mCols][pos%mCols]--;
+			
 			int temp;
+			int[] d;
 			List<SpacePair> goodMoves= new ArrayList<>();
-			for (Direction d : mDirections) {
+			for (int x = 0; x < 8; x++) {
+				d = mDirections[x];
+				
 				if (!isValidMove(pos, d)) continue;
 				
-				temp = pos + d.deltaX() + d.deltaY();
+				temp = pos + d[0] + d[1];
 				if (temp >= 0 && temp < mRows*mCols) {
 					goodMoves.add(new SpacePair(
 						temp,
-						possMoves[temp/mCols][temp%mCols]));
+						possMoves[temp/mCols][temp%mCols],
+						x));
 				}
 			}
 			//cuz java 7
@@ -201,10 +244,11 @@ public class KnightBoard {
 			}
 			System.out.println();*/
 			
+			//This is the reason why it doesn't start at corner
 			for (SpacePair s : goodMoves) {
-				if (addK(s.getPos(), level)) {
+				if (addK(pos, level)) {
 					if (solveFH(s.getPos(), level+1)) return true;
-					remK(s.getPos());
+					remK(pos);
 				}
 			}
 			
@@ -226,17 +270,27 @@ public class KnightBoard {
 		possMoves = genMoves();
 		
 		int x = 0;
-		while (x < mRows*mCols && !solveFH(x, 1)) System.out.println(x++);
-		//solveFH(mRows/2 + mCols/2, 1);
+		//while (x < mRows*mCols && !solveFH(x, 1)) System.out.println(x++);
+		//solveFH(mRows*mRows/2 + mCols/2, 1);
+		solveFH(0, 1);
 	}
 	
 	public static void main(String args[]) {
-		KnightBoard k = new KnightBoard(15, 12);
-		k.solveFast();
-		//System.out.println(k);
+		if (args.length < 2) System.exit(1);
 		
-		//k.solve();
-		//System.out.println(k);
+		KnightBoard k = new KnightBoard(Integer.parseInt(args[0]),
+			Integer.parseInt(args[1]));
+		
+		if (args.length > 2 && args[2].equals("f")) {
+			System.out.println("fast");
+			k.solveFast();
+			System.out.println(k);
+		}
+		else {
+			System.out.println("slow");
+			k.solveH(0, 1);
+			System.out.println(k);
+		}
 		
 		/*k = new KnightBoard(4,4);
 		k.solve();
