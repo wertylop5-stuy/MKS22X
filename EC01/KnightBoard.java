@@ -190,7 +190,7 @@ public class KnightBoard {
 				}
 			}
 			//cuz java 7
-			goodMoves.sort(new Comparator<SpacePair>() {
+			Collections.sort(goodMoves, new Comparator<SpacePair>() {
 				@Override
 				public int compare(SpacePair o1, SpacePair o2) {
 					return o1.getPossMove() - o2.getPossMove();
