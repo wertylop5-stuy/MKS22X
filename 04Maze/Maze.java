@@ -40,6 +40,7 @@ public class Maze {
 		maze = new char[temp.size()][mCols];
 		
 		//Now move from temp to maze array and set start
+		boolean endFound = false;
 		for (int x = 0; x < temp.size(); x++) {
 			maze[x] = temp.get(x).toCharArray();
 			
@@ -50,8 +51,13 @@ public class Maze {
 						startY = y;
 						maze[x][y] = ' ';
 					}
+					else if (maze[x][y] == 'E') endFound = true;
 				}
 			}
+		}
+		if (!(startX == -1 && endFound)) {
+			System.err.println("No S or E found in maze");
+			System.exit(2);
 		}
 		
 		/*for (char[] r : maze) {
