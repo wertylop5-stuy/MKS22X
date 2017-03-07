@@ -2,7 +2,18 @@ import java.io.*;
 import java.util.*;
 
 public class mar08bronze {
+    
+    public static int getVolume(int r , int c , int e, int[][] lake) {
+	int totalDepth = 0;
+        for(int x = 0; x <r; x++){
+	    for (int y =0; y< c; y++){
+		if (lake[x][y]-e < 0) totalDepth += (e-lake[x][y]);
+	    }
+	}
 	
+	return totalDepth*72*72;
+    }
+
 	public static void stomp(int rs, int cs, int ds, int[][] lake) {
 		int highX, highY;
 		int hi = -999;
@@ -15,14 +26,25 @@ public class mar08bronze {
 				}
 			}
 		}
-		System.out.println(hi);
+
+		for(int x = rs; x <rs+3; x++){
+		    for (int y =cs; y< cs+3; y++){
+			int temp = (ds-(hi-lake[x][y]));
+			if(temp>0){
+			    lake[x][y] -= temp;
+			}
+			//System.out.print(lake[x][y] + " ");
+		    }
+		    //System.out.println();
+		}
+		//System.out.println(hi);
 	}
 	
 	public static void main(String args[]) throws Exception{
 		BufferedReader in = null;
 		PrintWriter out = null;
 		try{
-		 in= new BufferedReader(new FileReader("makelake.in"));
+		 in= new BufferedReader(new FileReader("makelake2.in"));
 		 out = 
 			new PrintWriter(new BufferedWriter(new FileWriter("makelake.out")));
 		}
@@ -51,16 +73,16 @@ public class mar08bronze {
 //System.out.println(lake[row][col]);
 			}
 		}
-int rs, cs, ds;
-for(int x = 0; x<n; x++){
-st = new StringTokenizer(in.readLine());
-rs = Integer.parseInt(st.nextToken()) - 1;
-cs = Integer.parseInt(st.nextToken()) - 1;
-ds = Integer.parseInt(st.nextToken());
-	stomp(rs, cs, ds, lake);
-}
-
-
+		int rs, cs, ds;
+		for(int x = 0; x<n; x++){
+			st = new StringTokenizer(in.readLine());
+			rs = Integer.parseInt(st.nextToken()) - 1;
+			cs = Integer.parseInt(st.nextToken()) - 1;
+			ds = Integer.parseInt(st.nextToken());
+			stomp(rs, cs, ds, lake);
+		}
+		int answer = getVolume(r, c , e, lake);
+		System.out.println(answer);
 	}
 
 }
