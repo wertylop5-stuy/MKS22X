@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class USACO {
-    public int getVolume(int r , int c , int e, int[][] lake) {
+    private int getVolume(int r , int c , int e, int[][] lake) {
 		int totalDepth = 0;
         for(int x = 0; x <r; x++){
 			for (int y =0; y< c; y++){
@@ -13,7 +13,7 @@ public class USACO {
 		return totalDepth*72*72;
     }
 
-	public void stomp(int rs, int cs, int ds, int[][] lake) {
+	private void stomp(int rs, int cs, int ds, int[][] lake) {
 		int highX, highY;
 		int hi = -999;
 		for (int x = rs; x < rs+3; x++) {
@@ -85,7 +85,7 @@ public class USACO {
 		return getVolume(r, c , e, lake);
 	}
 
-	public int silverH(int x, int y, int endX, int endY,
+	private int silverH(int x, int y, int endX, int endY,
 			char[][] pasture, int t) {
 		if (t == 0) {
 			if (x == endX && y == endY) return 1;
