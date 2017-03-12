@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+//TODO either make cell objs for each space or use 2nd array
+
 public class USACO {
     private int getVolume(int r , int c , int e, int[][] lake) {
 		int totalDepth = 0;
@@ -84,7 +86,8 @@ public class USACO {
 		}
 		return getVolume(r, c , e, lake);
 	}
-
+	
+	/*
 	private int silverH(int x, int y, int endX, int endY,
 			char[][] pasture, int t) {
 		if (t == 0) {
@@ -102,7 +105,7 @@ public class USACO {
 			silverH(x, y-1, endX, endY, pasture, t-1);
 	}
 	
-	public int silver(String filename) {
+	public int silverSlow(String filename) {
 		BufferedReader in = null;
 		try{
 		 in= new BufferedReader(new FileReader(filename));
@@ -138,10 +141,136 @@ public class USACO {
 		
 		return silverH(startX-1, startY-1, endX-1, endY-1, pasture, t);
 	}
+	*/
+	
+	public int silver(String filename) {
+		BufferedReader in = null;
+		try{
+		 in= new BufferedReader(new FileReader(filename));
+		}
+		catch(Exception e){System.out.println("Exception");}
+
+		StringTokenizer st = null;
+		
+		int n, m, t;
+		try{st = new StringTokenizer(in.readLine());}
+		catch(Exception e) {}
+		
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		t = Integer.parseInt(st.nextToken());
+		
+		int[][] pasture = new int[n][m];
+		for (int x = 0; x < n; x++) {
+			try {
+				int row = 0;
+				for (char c : in.readLine().toCharArray()) {
+					if (c == '.') pasture[x][row++] = 0;
+					if (c == '*') pasture[x][row++] = -1;
+				}
+			}
+			catch (Exception e) {}
+		}
+		
+		int startX, startY, endX, endY;
+		try{st = new StringTokenizer(in.readLine());}
+		catch(Exception e) {}
+		
+		startX = Integer.parseInt(st.nextToken()) - 1;
+		startY = Integer.parseInt(st.nextToken()) - 1;
+		endX = Integer.parseInt(st.nextToken()) - 1;
+		endY = Integer.parseInt(st.nextToken()) - 1;
+		
+		/*
+		Cullular automata solution (i was so close :(  )
+		Uses a queue?
+		
+		just realized the enormous amount of data this stores when n
+		increases too much. would be better to use this idea with smaller
+		n.
+		
+		First gen: intial
+		2 gen: set surrounding to one, self to zero
+		3...n gen: queue the position of each surrounding
+			nonzero square. Then, change the value at 
+		at each nonzero square, travel to the surrounding zero
+			squares. Calculate value
+			After all zero squares visited, set intial squares to zero
+		*/
+		/*
+		xnor pattern
+		
+		if gen even and start even, nonzero
+		if gen even and start odd, zero
+		if gen odd and start even, zero
+		if gen odd and start odd, nonzero
+		
+		E = even O = odd
+		S = start G = gen
+		   ES  OS
+		EG 01  00
+		OG 00  01
+		*/
+		pasture[startX][startY] = 1;
+		
+		Move[] moves = {
+			new Move(0, 1),
+			new Move(0, -1),
+			new Move(1, 0),
+			new Move(-1, 0)
+		};
+		
+		//true for even start
+		//false false for odd start
+		boolean start;
+		if ((startX + startY) % 2 == 0) start = true;
+		else start = false;
+		
+		for (int gen = 0; gen < t; gen++) {
+			//adding value
+			for (int row = 0; row < n; row++) {
+				for (int col = 0; col < m; col++) {
+					//zero space
+					if (((gen % 2 == 0) ^ start) &&
+						pasture[row][col] != -1) {
+						for (Move o : moves) {
+							if (isValid(row+o.x, col+o.y, n, m) &&
+								pasture[row+o.x][col+o.y] != -1) {
+								pasture[row][col] += pasture[row+o.x][col+o.y];
+							}
+						}
+					}
+				}
+			}
+			
+			//prep for next gen (zeroing values)
+			for (int row = 0; row < n; row++) {
+				for (int col = 0; col < m; col++) {
+					//nonzero space
+					if (!((gen % 2 == 0) ^ start) &&
+						pasture[row][col] != -1 ) {
+						pasture[row][col] = 0;
+					}
+				}
+			}
+		}
+		
+		return pasture[endX][endY];
+	}
+	
+	private class Move {
+		public int x;
+		public int y;
+		Move(int a, int b) {x = a; y = b;}
+	}
+	
+	private boolean isValid(int x, int y, int a, int b) {
+		return x >= 0 && x < a && y >= 0 && y < b;
+	}
 	
 	public static void main(String args[]) {
 		USACO u = new USACO();
 		//System.out.println(u.bronze("makelake10.in"));
-		System.out.println(u.silver("ctravel2.in"));
+		System.out.println(u.silver("ctravel.in"));
 	}
 }
