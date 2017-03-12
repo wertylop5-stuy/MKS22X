@@ -160,13 +160,20 @@ public class USACO {
 		m = Integer.parseInt(st.nextToken());
 		t = Integer.parseInt(st.nextToken());
 		
-		int[][] pasture = new int[n][m];
+		Pair[][] pasture = new Pair[n][m];
 		for (int x = 0; x < n; x++) {
 			try {
 				int row = 0;
 				for (char c : in.readLine().toCharArray()) {
-					if (c == '.') pasture[x][row++] = 0;
-					if (c == '*') pasture[x][row++] = -1;
+					pasture[x][row] = new Pair(0, 0);
+					if (c == '.') {
+						pasture[x][row].x = 0;
+						pasture[x][row++].y = 0;
+					}
+					if (c == '*') {
+						pasture[x][row].x = -1;
+						pasture[x][row++].y = -1;
+					}
 				}
 			}
 			catch (Exception e) {}
@@ -211,13 +218,13 @@ public class USACO {
 		EG 01  00
 		OG 00  01
 		*/
-		pasture[startX][startY] = 1;
+		pasture[startX][startY].x = 1;
 		
-		Move[] moves = {
-			new Move(0, 1),
-			new Move(0, -1),
-			new Move(1, 0),
-			new Move(-1, 0)
+		Pair[] moves = {
+			new Pair(0, 1),
+			new Pair(0, -1),
+			new Pair(1, 0),
+			new Pair(-1, 0)
 		};
 		
 		//true for even start
@@ -227,17 +234,25 @@ public class USACO {
 		else start = false;
 		
 		for (int gen = 0; gen < t; gen++) {
+			/*System.out.println("gen " + gen);
+			for (Pair[] rX : pasture) {
+				for (Pair p : rX) System.out.print(p.x + "," + p.y + " ");
+				System.out.println();
+			}*/
 			//adding value
 			for (int row = 0; row < n; row++) {
 				for (int col = 0; col < m; col++) {
 					//zero space
-					if (((gen % 2 == 0) ^ start) &&
-						pasture[row][col] != -1) {
-						for (Move o : moves) {
+					if ( !((((col+row) % 2 == 0) ^ start) ^ (gen % 2 == 0)) &&
+						pasture[row][col].x != -1) {
+						//pasture[row][col].y = 0;
+						for (Pair o : moves) {
+							//System.out.println("Move " + o.x + "," + o.y);
 							if (isValid(row+o.x, col+o.y, n, m) &&
-								pasture[row+o.x][col+o.y] != -1) {
-								pasture[row][col] += pasture[row+o.x][col+o.y];
+								pasture[row+o.x][col+o.y].x != -1) {
+								pasture[row][col].y += pasture[row+o.x][col+o.y].x;
 							}
+							//System.out.println("val: "+row+","+col+" "+pasture[row][col].y);
 						}
 					}
 				}
@@ -247,21 +262,22 @@ public class USACO {
 			for (int row = 0; row < n; row++) {
 				for (int col = 0; col < m; col++) {
 					//nonzero space
-					if (!((gen % 2 == 0) ^ start) &&
-						pasture[row][col] != -1 ) {
-						pasture[row][col] = 0;
+					if (//!((gen % 2 == 0) ^ start) &&
+						pasture[row][col].x != -1 ) {
+						pasture[row][col].x = pasture[row][col].y;
+						pasture[row][col].y = 0;
 					}
 				}
 			}
 		}
 		
-		return pasture[endX][endY];
+		return pasture[endX][endY].x;
 	}
 	
-	private class Move {
+	private class Pair {
 		public int x;
 		public int y;
-		Move(int a, int b) {x = a; y = b;}
+		Pair(int a, int b) {x = a; y = b;}
 	}
 	
 	private boolean isValid(int x, int y, int a, int b) {
@@ -269,8 +285,9 @@ public class USACO {
 	}
 	
 	public static void main(String args[]) {
+		if (args.length != 1) System.exit(1);
 		USACO u = new USACO();
 		//System.out.println(u.bronze("makelake10.in"));
-		System.out.println(u.silver("ctravel.in"));
+		System.out.println(u.silver(args[0]));
 	}
 }
