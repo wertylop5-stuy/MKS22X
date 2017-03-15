@@ -23,24 +23,36 @@ public class Derp {
 		while(start < end) {
 			/*System.out.println(lo+", "+start);
 			for (int x : data) System.out.print(x+" ");
-			System.out.println();*/
+			System.out.println();
+			*/
 			
 			if (data[start] <= data[end]) {
 				swap(data, start, lo++);
 			}
-			/*else if (pivot+1<data.length && data[pivot] > data[pivot+1]) {
-				swap(data, pivot, pivot+1);
-				pivot += 1;
-			}*/
+			
 			start++;
 			/*
 			for (int x : data) System.out.print(x+" ");
-			System.out.println();*/
+			System.out.println();
+			*/
 		}
 		
 		swap(data, end, lo);
 		
 		return lo;
+	}
+	
+	public static int quickselect(int[] data, int k) {
+		int start = 0, end = data.length;
+		int res;
+		while (start < end) {
+			res = part(data, start, end);
+			
+			if (k > res) start = res+1;
+			else if (k < res) end = res;
+			else if (k == res) return data[res];
+		}
+		return -1;
 	}
 	
 	public static void main(String args[]) {
@@ -49,9 +61,11 @@ public class Derp {
 		for (int x=0;x<args.length;x++) {
 			a[x]=Integer.parseInt(args[x]);
 		}
-		
+		/*
 		System.out.println(part(a, 0, a.length));
 		for (int x : a) System.out.print(x+" ");
 		System.out.println();
+		*/
+		System.out.println(quickselect(a, 2));
 	}
 }
