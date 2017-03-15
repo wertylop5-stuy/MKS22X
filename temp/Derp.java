@@ -66,6 +66,6 @@ public class Derp {
 		for (int x : a) System.out.print(x+" ");
 		System.out.println();
 		*/
-		System.out.println(quickselect(a, 2));
+		System.out.println(quickselect(a, 0));
 	}
 }
