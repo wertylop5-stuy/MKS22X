@@ -62,7 +62,7 @@ public class Quick {
 			a[x]=Integer.parseInt(args[x]);
 		}
 		/*
-		System.out.println(part(a, 0, a.length));
+		System.out.println(part(a, 2, 7));
 		for (int x : a) System.out.print(x+" ");
 		System.out.println();
 		*/
