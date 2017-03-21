@@ -91,17 +91,17 @@ public class Quick {
 		return lo;
 	}
 	
-	public static void quicksort(int[] data, int start, int end) {
+	public static void quicksortslow(int[] data, int start, int end) {
 		if (start >= end-1) return;
 		
 		int res = part2(data, start, end);
 		
-		quicksort(data, res+1, end);
-		quicksort(data, start, res);
+		quicksortslow(data, res+1, end);
+		quicksortslow(data, start, res);
 	}
 	
 	//triple partition, pivot at end
-	public static void quickdutch(int[] data, int start, int end) {
+	private static void quicksortH(int[] data, int start, int end) {
 		if (start >= end-1) return;
 		
 		int pivot = (int)((end-start) * Math.random() + start);
@@ -134,20 +134,24 @@ public class Quick {
 			*/
 		}
 		
-		quickdutch(data, start, lt+1);
-		quickdutch(data, gt+1, end);
+		quicksortH(data, start, lt+1);
+		quicksortH(data, gt+1, end);
+	}
+	
+	public static void quicksort(int[] a) {
+		quicksortH(a, 0, a.length);
 	}
 	
 	public static void main(String args[]) {
 		if (args.length < 1) System.exit(1);
-		int[] a = new int[args.length];
-		for (int x=0;x<args.length;x++) {
-			a[x]=Integer.parseInt(args[x]);
+		int[] a = new int[50000];
+		for (int x=0;x<50000;x++) {
+			a[x]=(int)(Integer.parseInt(args[0])*Math.random());
 		}
 		
-		quickdutch(a, 0, a.length);
+		quicksort(a);
 		
-		/*for (int x : a) System.out.print(x+" ");
-		System.out.println();*/
+		for (int x : a) System.out.print(x+" ");
+		System.out.println();
 	}
 }
