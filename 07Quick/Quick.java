@@ -42,7 +42,7 @@ public class Quick {
 		return lo;
 	}
 	
-	public static int quickselect(int[] data, int k) {
+	public static int quickselectslow(int[] data, int k) {
 		int start = 0, end = data.length;
 		int res;
 		while (start < end) {
@@ -53,6 +53,54 @@ public class Quick {
 			else if (k == res) return data[res];
 		}
 		return -1;
+	}
+	
+	public static int quickselect(int[] data, int k) {
+		int start = 0, end = data.length;
+		int pivot;
+		int lo, lt, hi, gt, i;
+		
+		while (start < end) {
+			pivot = (int)((end-start) * Math.random() + start);
+			//System.out.println("pivot: " + pivot);
+			
+			swap(data, pivot, end-1);
+			/*for (int x : data) System.out.print(x+" ");
+			System.out.println();*/
+			
+			
+			lo = lt = start;
+			hi = gt = end-1;
+			i = gt-1;
+			
+			while(i >= lt && data[i] == data[gt]) i--;
+			
+			while(i >= lt) {
+				/*System.out.println(lo+", "+hi);
+				for (int x : data) System.out.print(x+" ");
+				System.out.println();
+				*/
+				
+				if (data[i] > data[gt]) {
+					swap(data, i, gt--);
+				}
+				else if (data[i] < data[gt]) {
+					swap(data, i, lt++);
+				}
+				else i--;
+				/*
+				for (int x : data) System.out.print(x+" ");
+				System.out.println();
+				*/
+			}
+			
+			//System.out.println("k: " + k + " & lt: " + lt + " & gt: " + gt);
+			if (k < lt) end = lt;
+			else if (k > gt) start = gt+1;
+			else return data[k];
+		}
+		
+		return data[k];
 	}
 	
 	//only lo and hi, no need for third pointer
@@ -144,14 +192,17 @@ public class Quick {
 	
 	public static void main(String args[]) {
 		if (args.length < 1) System.exit(1);
-		int[] a = new int[50000];
-		for (int x=0;x<50000;x++) {
+		int[] a = new int[args.length-1];
+		/*for (int x=0;x<50000;x++) {
 			a[x]=(int)(Integer.parseInt(args[0])*Math.random());
+		}*/
+		for (int x=1;x<args.length;x++) {
+			a[x-1]=Integer.parseInt(args[x]);
 		}
 		
-		quicksort(a);
+		System.out.println(quickselect(a, Integer.parseInt(args[0])));
 		
-		for (int x : a) System.out.print(x+" ");
-		System.out.println();
+		/*for (int x : a) System.out.print(x+" ");
+		System.out.println();*/
 	}
 }
