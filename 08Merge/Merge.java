@@ -1,10 +1,13 @@
 public class Merge {
-	private static void merge(int[] src, int[] targ,
+	
+	//section 1: sStart inclusive, tStart exclusive
+	//section 2: tStart inclusive, tEnd exclusive
+	private static void merge(int[] targ, int[] src,
 			int sStart, int tStart, int tEnd) {
 		int ptrA = sStart, ptrB = tStart;
 		int tPos = sStart;
 		
-		System.out.println("sStart="+sStart+" tStart="+tStart+" tEnd="+tEnd+" tPos="+tPos);
+		//System.out.println("sStart="+sStart+" tStart="+tStart+" tEnd="+tEnd+" tPos="+tPos);
 	
 		while (tPos < targ.length && ptrA < tStart && ptrB < tEnd) {
 			if (src[ptrA] <= src[ptrB]) {
@@ -13,14 +16,15 @@ public class Merge {
 			else {
 				targ[tPos++] = src[ptrB++];
 			}
-			
+			/*
 			for (int i : targ) {
 				System.out.print(i + " ");
 			}
 			System.out.println();
-			
+			*/
 		}
 		
+		//fill in remaining elements
 		while (tPos < targ.length && ptrA < tStart) {
 			targ[tPos++] = src[ptrA++];
 		}
@@ -28,18 +32,19 @@ public class Merge {
 			targ[tPos++] = src[ptrB++];
 		}
 		
-		
+		/*
 		for (int i : targ) {
 			System.out.print(i + " ");
 		}
 		System.out.println();
-		
+		*/
 	}
 	
+	//start inclusive, end exclusive
 	private static void mergesortH(int[] a, int[] b,
-			int startIndex, int endIndex, int curSize) {
-		System.out.println("startIndex="+startIndex+" endIndex="+endIndex+" curSize="+curSize);
-		
+			int startIndex, int endIndex) {
+		//System.out.println("startIndex="+startIndex+" endIndex="+endIndex+" curSize="+curSize);
+		/*
 		System.out.println("a:");
 		for (int x = startIndex; x < endIndex; x++) {
 			System.out.print(a[x] + " ");
@@ -51,49 +56,47 @@ public class Merge {
 			System.out.print(b[x] + " ");
 		}
 		System.out.println();
+		*/
 		
-		
-		
+		//aka if size==1
 		if (endIndex-startIndex <= 1) {
-			b[startIndex] = a[startIndex];
 			return;
 		}
 		int mid = (startIndex+endIndex) / 2;
 		
 		//left
-		mergesortH(a, b, startIndex, 
-			mid, mid-startIndex);
+		mergesortH(b, a, startIndex, mid);
 		//right
-		mergesortH(a, b, mid, endIndex, endIndex-mid);
+		mergesortH(b, a, mid, endIndex);
 		
-		//if reached back to full array
-		if (curSize == a.length) {
-			merge(b, a, startIndex, mid, endIndex);
-		}
-		//otherwise, it's a subarray
-		else {
-			merge(a, b, startIndex, mid, endIndex);
-		}
+		merge(a, b, startIndex, mid, endIndex);
 	}
 	
 	public static void mergesort(int[] ary) {
 		int[] targ = new int[ary.length];
-		mergesortH(ary, targ, 0, ary.length, ary.length);
+		System.arraycopy(ary, 0, targ, 0, ary.length);
+		mergesortH(ary, targ, 0, ary.length);
 	}
 	
 	public static void main(String args[]) { 
 		if (args.length < 1) System.exit(1);
-		int[] a = new int[args.length];
+		/*int[] a = new int[args.length];
 		for (int x = 0; x < args.length; x++) {
 			a[x] = Integer.parseInt(args[x]);
+		}*/
+		
+		int[] a = new int[Integer.parseInt(args[0])];
+		for (int x = 0; x < Integer.parseInt(args[0]); x++) {
+			a[x] = (int)(Integer.parseInt(args[1])*Math.random());
 		}
-		
+		/*
 		for (int i : a) System.out.print(i + " ");
 		System.out.println();
-		
+		*/
 		mergesort(a);
-		
+		/*
 		for (int i : a) System.out.print(i + " ");
 		System.out.println();
+		*/
 	}
 }
