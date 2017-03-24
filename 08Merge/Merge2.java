@@ -1,4 +1,4 @@
-public class Merge {
+public class Merge2 {
 	/*
 	insertion sort faster on duplicates
 	insertion sort faster on random arrays size <= 60
@@ -214,7 +214,7 @@ public class Merge {
 		
 		
 		//start = System.nanoTime();
-		mergesort(a);
+		mergesortt(a);
 		/*
 		for (int i : a) System.out.print(i + " ");
 		System.out.println();
@@ -223,7 +223,7 @@ public class Merge {
 		
 		
 		//start = System.nanoTime();
-		//mergesortt(b);
+		//mergesort(b);
 		/*
 		for (int i : b) System.out.print(i + " ");
 		System.out.println();

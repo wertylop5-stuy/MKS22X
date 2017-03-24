@@ -191,18 +191,43 @@ public class Quick {
 	}
 	
 	public static void main(String args[]) {
-		if (args.length < 1) System.exit(1);
-		int[] a = new int[args.length-1];
-		/*for (int x=0;x<50000;x++) {
-			a[x]=(int)(Integer.parseInt(args[0])*Math.random());
+		
+		//take array from command line
+		/*if (args.length < 1) System.exit(1);
+		int[] a = new int[args.length];
+		for (int x = 0; x < args.length; x++) {
+			a[x] = Integer.parseInt(args[x]);
 		}*/
-		for (int x=1;x<args.length;x++) {
-			a[x-1]=Integer.parseInt(args[x]);
+		
+		//random array, first arg is size, second arg is number range
+		int[] a = new int[Integer.parseInt(args[0])];
+		for (int x = 0; x < Integer.parseInt(args[0]); x++) {
+			a[x] = (int)(Integer.parseInt(args[1])*Math.random());
 		}
 		
-		System.out.println(quickselect(a, Integer.parseInt(args[0])));
+		//sorted array of size arg 0
+		/*int[] a = new int[Integer.parseInt(args[0])];
+		for (int x = 0; x < Integer.parseInt(args[0]); x++) {
+			a[x] = x;
+		}*/
 		
-		/*for (int x : a) System.out.print(x+" ");
-		System.out.println();*/
+		//Reverse sorted list of size arg 0 
+		/*int[] a = new int[Integer.parseInt(args[0])];
+		for (int x = 0; x < Integer.parseInt(args[0]); x++) {
+			a[x] = Integer.parseInt(args[0])-x;
+		}*/
+		
+		
+		/*
+		for (int i : a) System.out.print(i + " ");
+		System.out.println();
+		*/
+		
+		quicksort(a);
+		
+		/*
+		for (int i : a) System.out.print(i + " ");
+		System.out.println();
+		*/
 	}
 }
