@@ -1,4 +1,29 @@
 public class Merge {
+	public static void insertionSort(int[] data) {
+		int temp = 0;
+		int j = 0;
+		
+		//Go thru all elements
+		for (int i = 1; i < data.length; i++) {
+			
+			//Is the current less than the previous?
+			if (data[i] < data[i-1]) {
+				
+			//save current val
+			temp = data[i];
+			j = i;
+				
+			//is current less than previous
+			while (j > 0 && temp < data[j-1]) {
+				data[j] = data[j-1];
+					
+				//change index
+				j--;
+			}
+			data[j] = temp;
+			}
+		}
+    }
 	
 	//section 1: sStart inclusive, tStart exclusive
 	//section 2: tStart inclusive, tEnd exclusive
