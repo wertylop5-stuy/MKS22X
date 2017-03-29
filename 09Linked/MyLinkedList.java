@@ -142,6 +142,8 @@ public class MyLinkedList {
 		l.add(6);
 		System.out.println(l);
 		
+		System.out.println(l.indexOf(0));
+		
 		/*
 		System.out.println(l.set(4, 99));
 		System.out.println(l);
