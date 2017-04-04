@@ -7,6 +7,7 @@ public class MyLinkedList {
 	private class Node {
 		int data;
 		Node next;
+		Node prev;
 		
 		public Node(int d, Node n) {
 			data = d;
@@ -15,6 +16,16 @@ public class MyLinkedList {
 		
 		public Node(int d) {
 			data = d;
+		}
+		
+		public String toString() {
+			String res = "(";
+			if (prev==null) res +="null)";
+			else res += prev.data+")";
+			res+=""+data;
+			if (next==null) res +="(null)";
+			else res += "("+next.data+")";
+			return res;
 		}
 	}
 	
@@ -40,6 +51,7 @@ public class MyLinkedList {
 			return true;
 		}
 		Node t = new Node(val);
+		t.prev = tail;
 		tail.next = t;
 		tail = t;
 		
@@ -72,6 +84,8 @@ public class MyLinkedList {
 		Node prev = getRef(--index);	//so we can change the pointers of the node before targ
 		
 		Node t = new Node(val, prev.next);
+		t.prev = prev;
+		prev.next.prev = t;
 		prev.next = t;
 		
 		size++;
@@ -142,6 +156,7 @@ public class MyLinkedList {
 		String res = "[";
 		Node ptr = head;
 		while (ptr != null) {
+			System.out.println(ptr);
 			if (ptr.next == null){
 				res += ptr.data;
 			}
@@ -166,7 +181,6 @@ public class MyLinkedList {
 		System.out.println(l);
 		
 		//System.out.println(l.indexOf(0));
-		
 		l.add(0, -8);
 		System.out.println(l);
 		
@@ -175,7 +189,7 @@ public class MyLinkedList {
 		
 		l.add(7, -7);
 		System.out.println(l);
-		
+		/*
 		System.out.println(l.get(0));
 		System.out.println(l.get(7));
 		System.out.println(l.get(4));
@@ -202,7 +216,7 @@ public class MyLinkedList {
 		
 		System.out.println(l.remove(3));
 		System.out.println(l);
-		
+		*/
 		/*
 		System.out.println(l.set(4, 99));
 		System.out.println(l);
