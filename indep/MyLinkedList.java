@@ -1,26 +1,26 @@
-public class MyLinkedList {
+public class MyLinkedList <T> {
 	private Node head;
 	private Node tail;
 	private int size;
 	
 	
 	private class Node {
-		int data;
+		T data;
 		Node next;
 		
-		public Node(int d, Node n) {
+		public Node(T d, Node n) {
 			data = d;
 			next = n;
 		}
 		
-		public Node(int d) {
+		public Node(T d) {
 			data = d;
 		}
 	}
 	
 	public MyLinkedList() {}
 	
-	private boolean addHead(int data) {
+	private boolean addHead(T data) {
 		Node t = new Node(data);
 		if (head != null) {
 			t.next = head;
@@ -34,7 +34,7 @@ public class MyLinkedList {
 	}
 	
 	//adds to end of list
-	public boolean add(int val) {
+	public boolean add(T val) {
 		if (size == 0) {
 			addHead(val);
 			return true;
@@ -56,7 +56,7 @@ public class MyLinkedList {
 		return ptr;
 	}
 	
-	public void add(int index, int val) {
+	public void add(int index, T val) {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException(""+index);
 		
@@ -77,11 +77,11 @@ public class MyLinkedList {
 		size++;
 	}
 	
-	public int remove(int index) {
+	public T remove(int index) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException(""+index);
 		
-		int temp;
+		T temp;
 		if (index == 0) {
 			temp = head.data;
 			head = head.next;
@@ -105,29 +105,29 @@ public class MyLinkedList {
 		return temp;
 	}
 	
-	public int get(int index) {
+	public T get(int index) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException(""+index);
 		
 		return getRef(index).data;
 	}
 	
-	public int set(int index, int newVal) {
+	public T set(int index, T newVal) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException(""+index);
 		
 		Node t = getRef(index);
-		int old = t.data;
+		T old = t.data;
 		t.data = newVal;
 		return old;
 	}
 	
-	public int indexOf(int val) {
+	public int indexOf(T val) {
 		Node ptr = head;
 		int counter = 0;
 		
 		while(ptr != null || counter < size) {
-			if (ptr.data == val) return counter;
+		    if (ptr.data == val || ptr.data.equals(val)) return counter;
 			
 			ptr = ptr.next;
 			counter++;
@@ -152,13 +152,13 @@ public class MyLinkedList {
 	}
 	
 	public static void main(String args[]) {
-		MyLinkedList l = new MyLinkedList();
+		MyLinkedList<Integer> l = new MyLinkedList<>();
 		
 		System.out.println(l);
-		l.add(3);
+		l.addHead(3);
 		System.out.println(l);
-		l.add(7);
-		l.add(11);
+		l.addHead(7);
+		l.addHead(11);
 		System.out.println(l);
 		l.add(6);
 		System.out.println(l);
@@ -206,6 +206,20 @@ public class MyLinkedList {
 		/*
 		System.out.println(l.set(4, 99));
 		System.out.println(l);
+		*/
+		
+		MyLinkedList<String> lol = new MyLinkedList<>();
+		lol.add("a");
+		lol.add("ba");
+		lol.add("a");
+		lol.add("9");
+		System.out.println(lol);
+		System.out.println(lol.indexOf("u"));
+		/*
+		lol.remove(0);
+		lol.remove(0);
+		System.out.println(lol.remove(0));
+		System.out.println(lol);
 		*/
 	}
 }
