@@ -35,6 +35,7 @@ public class MyLinkedList {
 		Node t = new Node(data);
 		if (head != null) {
 			t.next = head;
+			head.prev = t;
 		}
 		else tail = t;
 		
@@ -95,24 +96,25 @@ public class MyLinkedList {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException(""+index);
 		
-		int temp;
+		int temp = -1;
 		if (index == 0) {
 			temp = head.data;
 			head = head.next;
+			head.prev = null;
 			
 			size--;
 			return temp;
 		}
-		
-		Node t = getRef(--index);
-		temp = t.next.data;
+		Node t = getRef(index);
+		temp = t.data;
 		
 		if (index == size-1) {
-			tail = t;
+			tail = tail.prev;
 			tail.next = null;
 		}
 		else {
-			t.next = t.next.next;
+			t.next.prev = t.prev;
+			t.prev.next = t.next;
 		}
 		
 		size--;
@@ -189,7 +191,7 @@ public class MyLinkedList {
 		
 		l.add(7, -7);
 		System.out.println(l);
-		/*
+		
 		System.out.println(l.get(0));
 		System.out.println(l.get(7));
 		System.out.println(l.get(4));
@@ -216,7 +218,7 @@ public class MyLinkedList {
 		
 		System.out.println(l.remove(3));
 		System.out.println(l);
-		*/
+		
 		/*
 		System.out.println(l.set(4, 99));
 		System.out.println(l);
