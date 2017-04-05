@@ -1,4 +1,6 @@
-public class MyLinkedList {
+import java.util.Iterator;
+
+public class MyLinkedList implements Iterable<Integer> {
 	private Node head;
 	private Node tail;
 	private int size;
@@ -30,6 +32,29 @@ public class MyLinkedList {
 	}
 	
 	public MyLinkedList() {}
+	
+	@Override
+	public Iterator<Integer> iterator() {
+		return new Iterator<Integer>() {
+			Node ptr = head;
+			@Override
+			public boolean hasNext() {
+				return ptr != null;
+			}
+			
+			@Override
+			public Integer next() {
+				int temp = ptr.data;
+				ptr = ptr.next;
+				return temp;
+			}
+			
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
 	
 	private boolean addHead(int data) {
 		Node t = new Node(data);
@@ -223,5 +248,8 @@ public class MyLinkedList {
 		System.out.println(l.set(4, 99));
 		System.out.println(l);
 		*/
+		for (Integer i : l) {
+			System.out.println(i);
+		}
 	}
 }
