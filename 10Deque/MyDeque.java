@@ -1,3 +1,5 @@
+import java.util.NoSuchElementException;
+
 public class MyDeque {
 	private String[] dq;
 	private int front;
@@ -25,6 +27,10 @@ public class MyDeque {
 		front = counter;
 	}
 	
+	private boolean isEmpty() {
+		return front - back == -dq.length || front - back == 1;
+	}
+	
 	public void addFirst(String s) {
 		if (s == null) throw new NullPointerException();
 		if (front == back) resize();
@@ -50,19 +56,38 @@ public class MyDeque {
 	}
 	
 	public String removeFirst() {
-		return null;
+		if (isEmpty())
+			throw new NoSuchElementException("deque is empty");
+		
+		String temp = getFirst();
+		
+		if (front == 0) front = dq.length+front-1;
+		else front = front - 1;
+		
+		return temp;
 	}
 	
 	public String removeLast() {
-		return null;
+		if (isEmpty())
+			throw new NoSuchElementException("deque is empty");
+		
+		String temp = getLast();
+		
+		back = (back+1)%dq.length;
+		
+		return temp;
 	}
 	
 	public String getFirst() {
+		if (isEmpty())
+			throw new NoSuchElementException("deque is empty");
 		if (front == 0) return dq[dq.length+front-1];
 		return dq[front-1];
 	}
 	
 	public String getLast() {
+		if (isEmpty())
+			throw new NoSuchElementException("deque is empty");
 		return dq[(back+1)%dq.length];
 	}
 	
@@ -81,9 +106,14 @@ public class MyDeque {
 	
 	public static void main(String args[]) {
 		MyDeque d = new MyDeque();
+		//d.getFirst();
+		//d.getLast();
+		//d.removeFirst();
+		//d.removeLast();
 		System.out.println(d);
 		d.addFirst("a");
 		System.out.println(d);
+		System.out.println("first: "+d.getFirst()+" last: "+d.getLast());
 		d.addFirst("b");
 		d.addFirst("e");
 		System.out.println(d);
@@ -96,6 +126,27 @@ public class MyDeque {
 		System.out.println(d);
 		d.addLast("q");
 		System.out.println(d);
+		System.out.println(d.front+" "+d.back);
 		System.out.println("first: "+d.getFirst()+" last: "+d.getLast());
+		System.out.println(d.removeFirst());
+		System.out.println(d);
+		System.out.println(d.removeLast());
+		System.out.println(d);
+		d.addLast("1");
+		d.addFirst("5");
+		System.out.println(d);
+		
+		
+		MyDeque a = new MyDeque();
+		a.addLast("r");
+		System.out.println(/*a.removeFirst()*/a.removeLast());
+		System.out.println(a);
+		//System.out.println(a.removeLast()/*a.removeFirst()*/);
+		//System.out.println(a);
+		//a.addLast("e");
+		a.addFirst("e");
+		System.out.println(a);
+		a.addFirst("e");
+		System.out.println(a);
 	}
 }
