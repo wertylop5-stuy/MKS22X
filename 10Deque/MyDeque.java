@@ -17,11 +17,12 @@ public class MyDeque {
 		for (int x = back+1; x != front; x=(x+1)%dq.length, counter++) {
 			temp[counter] = dq[x];
 		}
-		System.out.println("resized");
+		/*System.out.println("resized");
 		for (String s : temp) {
 			System.out.print(s + " ");
 		}
 		System.out.println();
+		*/
 		dq = temp;
 		back = temp.length-1;
 		front = counter;
@@ -36,11 +37,12 @@ public class MyDeque {
 		if (front == back) resize();
 		dq[front++] = s;
 		front %= dq.length;
-		
+		/*
 		for (String e : dq) {
 			System.out.print(e + " ");
 		}
 		System.out.println();
+		*/
 	}
 	
 	public void addLast(String s) {
@@ -48,11 +50,12 @@ public class MyDeque {
 		if (front == back) resize();
 		dq[back--] = s;
 		if (back < 0) back = back+dq.length;
-		
+		/*
 		for (String e : dq) {
 			System.out.print(e + " ");
 		}
 		System.out.println();
+		*/
 	}
 	
 	public String removeFirst() {
@@ -95,7 +98,7 @@ public class MyDeque {
 	public String toString() {
 		String res = "[";
 		for (int x = (back+1)%dq.length; x != front; x = (x+1)%dq.length) {
-			System.out.println(x+": "+dq[x]);
+			//System.out.println(x+": "+dq[x]);
 			if (dq[x] == null) res += "_, ";
 			else res += dq[x] + ", ";
 		}
