@@ -3,7 +3,7 @@ import java.util.Stack;
 
 public class Eval {
 	private static final String[] OPERATORS = {
-		"+", "-", "*", "/"
+		"+", "-", "*", "/", "%"
 	};
 	
 	private static boolean isOp(String s) {
@@ -13,27 +13,42 @@ public class Eval {
 		return false;
 	}
 	
-	private static double apply(String op, String a, String b) {
-		
+	private static double apply(String op, double bd, double ad) {
+		if (op.equals(OPERATORS[0])) return ad + bd;
+		else if (op.equals(OPERATORS[1])) return ad - bd;
+		else if (op.equals(OPERATORS[2])) return ad * bd;
+		else if (op.equals(OPERATORS[3])) return ad / bd;
+		else if (op.equals(OPERATORS[4])) return ad % bd;
+		return -1.0;
 	}
 	
-	public static double eval(String s) {
-		Stack<Double> s = new Stack();
-		StringTokenizer st = new StringTokenizer(s);
+	public static double eval(String sg) {
+		Stack<Double> s = new Stack<>();
+		StringTokenizer st = new StringTokenizer(sg);
 		
 		String temp;
 		while (st.hasMoreTokens()) {
 			temp = st.nextToken();
+			//System.out.println(temp);
 			if (isOp(temp)) {
-				
+				s.push(apply(temp, s.pop(), s.pop()));
 			}
 			else {
 				s.push(Double.parseDouble(temp));
 			}
 		}
+		return s.pop();
 	}
 	
 	public static void main(String args[]) {
+		if (args.length < 1) System.exit(1);
+		StringBuilder input = new StringBuilder();
 		
+		for(int x = 0; x < args.length; x++) {
+			if (args[x].equals("x")) input.append("* ");
+			else if (args[x].equals("d")) input.append("/ ");
+			else input.append(args[x]+" ");
+		}
+		System.out.println(eval(input.toString()));
 	}
 }
