@@ -1,7 +1,7 @@
 import java.util.StringTokenizer;
 import java.util.Stack;
 
-public class Eval {
+public class StackCalc {
 	private static final String[] OPERATORS = {
 		"+", "-", "*", "/", "%"
 	};
