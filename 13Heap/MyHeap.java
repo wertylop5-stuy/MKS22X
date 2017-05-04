@@ -22,10 +22,25 @@ public class MyHeap {
 		heap = res;
 	}
 	
+	private void swap(int a, int b) {
+		String temp = heap[a];
+		heap[a] = heap[b];
+		heap[b] = temp;
+	}
+	
 	//bumps up leaf elem if greater than parent
 	private void pushUp(int pos) {
-		while (pos > 1 && heap[pos] >= heap[pos/2]) {
-			
+		if(isMax) {
+			while (pos > 1 && heap[pos].compareTo(heap[pos/2])) {
+				swap(pos, pos/2);
+				pos /= 2;
+			}
+		}
+		else {
+			while (pos > 1 && heap[pos] <= heap[pos/2]) {
+				swap(pos, pos/2);
+				pos /= 2;
+			}
 		}
 	}
 	
@@ -41,11 +56,13 @@ public class MyHeap {
 	}
 	
 	public String remove() {
-		return null;
+		String res = heap[0];
+		pos--;
+		pushDown();
 	}
 	
 	public String peek() {
-		return null;
+		return heap[0];
 	}
 	
 	public String toString() {
