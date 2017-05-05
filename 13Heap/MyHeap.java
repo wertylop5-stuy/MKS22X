@@ -28,18 +28,57 @@ public class MyHeap {
 		heap[b] = temp;
 	}
 	
+	//a and b are indices of heap, b > a
+	//returns the index containing a higher value
+	private int maxOf(int a, int b) {
+		if (heap[b] == null) return a;
+		if (heap[a].compareTo(heap[b]) > 0) return a;
+		return b;
+	}
+	
+	private int minOf(int a, int b) {
+		if (heap[b] == null) return a;
+		if (heap[a].compareTo(heap[b]) < 0) return a;
+		return b;
+	}
+	
 	//bumps up leaf elem if greater than parent
 	private void pushUp(int pos) {
 		if(isMax) {
-			while (pos > 1 && heap[pos].compareTo(heap[pos/2])) {
+			while (pos > 1 && heap[pos].compareTo(heap[pos/2]) > 0) {
 				swap(pos, pos/2);
 				pos /= 2;
 			}
 		}
 		else {
-			while (pos > 1 && heap[pos] <= heap[pos/2]) {
+			while (pos > 1 && heap[pos].compareTo(heap[pos/2]) < 0) {
 				swap(pos, pos/2);
 				pos /= 2;
+			}
+		}
+	}
+	
+	//oops shadowed
+	private void pushDown(int pos) {
+		int temp;
+		if(isMax) {
+			//System.out.println("prepos*2: "+ pos*2 + " size: " + size);
+			while (pos*2 < size && heap[pos*2] != null
+								&& (heap[pos].compareTo(heap[pos*2]) < 0
+										|| heap[pos].compareTo(heap[pos*2+1]) < 0)) {
+				//System.out.println("pos*2: "+ pos*2 + " size: " + size);
+				temp = maxOf(pos*2, pos*2+1);
+				swap(pos, temp);
+				pos = temp;
+			}
+		}
+		else {
+			while (pos*2 < size && heap[pos*2] != null
+								&& (heap[pos].compareTo(heap[pos*2]) > 0
+										|| heap[pos].compareTo(heap[pos*2+1]) > 0)) {
+				temp = minOf(pos*2, pos*2+1);
+				swap(pos, temp);
+				pos = temp;
 			}
 		}
 	}
@@ -56,16 +95,34 @@ public class MyHeap {
 	}
 	
 	public String remove() {
-		String res = heap[0];
-		pos--;
-		pushDown();
+		if (size <= 0) return null;
+		String res = heap[1];
+		//swap(1, --pos);
+		heap[1] = heap[--pos];
+		//System.out.println(this);
+		
+		pushDown(1);
+		size--;
+		
+		return res;
 	}
 	
 	public String peek() {
-		return heap[0];
+		return heap[1];
 	}
 	
 	public String toString() {
+		String res = "[";
+		for (int x = 1; x < pos; x++) {
+			if (heap[x] == null) res += "_ ";
+			else res += heap[x] + " ";
+		}
+		if (res.length() > 1)
+			return res.substring(0, res.length()-1) + "]";
+		return res + "]";
+	}
+	
+	public String toStringD() {
 		String res = "[";
 		for (String s : heap) {
 			if (s == null) res += "_ ";
@@ -77,6 +134,7 @@ public class MyHeap {
 	}
 	
 	public static void main(String[] args) {
+		
 		MyHeap m = new MyHeap();
 		System.out.println(m);
 		m.add("t");
@@ -86,7 +144,103 @@ public class MyHeap {
 		System.out.println(m);
 		m.add("s");
 		System.out.println(m);
-		m.add("t");
+		m.add("z");
 		System.out.println(m);
+		m.add("Z");
+		System.out.println(m);
+		m.add("r");
+		System.out.println(m);
+		m.add("r");
+		System.out.println(m);
+		
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+		System.out.println(m.remove());
+		System.out.println(m);
+			
+		
+		m = new MyHeap(true);
+		System.out.println(m);
+		m.add("A");
+		System.out.println(m);
+		
+		m.add("G");
+		System.out.println(m);
+		m.add("Z");
+		System.out.println(m);
+		m.add("Z");
+		System.out.println(m);
+		m.add("E");
+		System.out.println(m);
+		m.add("M");
+		System.out.println(m);
+		
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		
+		m.add("A");
+		System.out.println(m);
+		m.add("G");
+		System.out.println(m);
+		m.add("Z");
+		System.out.println(m);
+		m.add("Z");
+		System.out.println(m);
+		m.add("E");
+		System.out.println(m);
+		m.add("M");
+		System.out.println(m);
+		m.add("T");
+		System.out.println(m);	
+		
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
+		System.out.println(m.remove());
+		System.out.println(m);
+		//System.out.println(m.toStringD());
 	}
 }
