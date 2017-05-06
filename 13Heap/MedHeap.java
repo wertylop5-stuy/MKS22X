@@ -1,10 +1,10 @@
 public class MedHeap {
-	private MyHeap lower;
-	private MyHeap higher;
+	private MyHeapCopy lower;
+	private MyHeapCopy higher;
 	
 	public MedHeap() {
-		lower = new MyHeap();
-		higher = new MyHeap(false);
+		lower = new MyHeapCopy();
+		higher = new MyHeapCopy(false);
 	}
 	
 	private void balance() {

@@ -1,5 +1,5 @@
 public class MyHeap {
-	private Integer[] heap;
+	private String[] heap;
 	private int size;
 	private int pos;
 	private boolean isMax;
@@ -9,7 +9,7 @@ public class MyHeap {
 	}
 	
 	public MyHeap(boolean b) {
-		heap = new Integer[2];
+		heap = new String[2];
 		isMax = b;
 		pos = 1;
 		size = 0;
@@ -17,13 +17,13 @@ public class MyHeap {
 	
 	private void resize() {
 		//System.out.println("resize");
-		Integer[] res = new Integer[heap.length*2];
+		String[] res = new String[heap.length*2];
 		System.arraycopy(heap, 0, res, 0, heap.length);
 		heap = res;
 	}
 	
 	private void swap(int a, int b) {
-		Integer temp = heap[a];
+		String temp = heap[a];
 		heap[a] = heap[b];
 		heap[b] = temp;
 	}
@@ -83,7 +83,7 @@ public class MyHeap {
 		}
 	}
 	
-	public void add(Integer s) {
+	public void add(String s) {
 		//System.out.println(size + " " + pos + " " + heap.length);
 		if (size >= heap.length - 1) {
 			resize();
@@ -94,9 +94,9 @@ public class MyHeap {
 		pushUp(pos-1);
 	}
 	
-	public Integer remove() {
+	public String remove() {
 		if (size <= 0) return null;
-		Integer res = heap[1];
+		String res = heap[1];
 		//swap(1, --pos);
 		heap[1] = heap[--pos];
 		//System.out.println(this);
@@ -107,11 +107,10 @@ public class MyHeap {
 		return res;
 	}
 	
-	public Integer peek() {
+	public String peek() {
 		return heap[1];
 	}
 	
-	@Override
 	public String toString() {
 		String res = "[";
 		for (int x = 1; x < pos; x++) {
@@ -125,7 +124,7 @@ public class MyHeap {
 	
 	public String toStringD() {
 		String res = "[";
-		for (Integer s : heap) {
+		for (String s : heap) {
 			if (s == null) res += "_ ";
 			else res += s + " ";
 		}
@@ -134,26 +133,24 @@ public class MyHeap {
 		return res + "]";
 	}
 	
-	public int getSize() {return size;}
-	
 	public static void main(String[] args) {
 		
-		MyHeap m = new MyHeap(false);
+		MyHeap m = new MyHeap();
 		System.out.println(m);
-		m.add(3);
+		m.add("t");
 		System.out.println(m);
 		
-		m.add(3);
+		m.add("r");
 		System.out.println(m);
-		m.add(0);
+		m.add("s");
 		System.out.println(m);
-		m.add(-1);
+		m.add("z");
 		System.out.println(m);
-		m.add(10);
+		m.add("Z");
 		System.out.println(m);
-		m.add(5);
+		m.add("r");
 		System.out.println(m);
-		m.add(2);
+		m.add("r");
 		System.out.println(m);
 		
 		System.out.println(m.remove());
@@ -173,7 +170,7 @@ public class MyHeap {
 		System.out.println(m.remove());
 		System.out.println(m);
 			
-		/*
+		
 		m = new MyHeap(true);
 		System.out.println(m);
 		m.add("A");
@@ -245,6 +242,5 @@ public class MyHeap {
 		System.out.println(m.remove());
 		System.out.println(m);
 		//System.out.println(m.toStringD());
-		*/
 	}
 }
