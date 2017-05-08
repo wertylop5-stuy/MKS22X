@@ -1,10 +1,10 @@
-public class MedHeap {
-	private MyHeapCopy lower;
-	private MyHeapCopy higher;
+public class RunningMedian {
+	private MyHeap lower;
+	private MyHeap higher;
 	
-	public MedHeap() {
-		lower = new MyHeapCopy();
-		higher = new MyHeapCopy(false);
+	public RunningMedian() {
+		lower = new MyHeap();
+		higher = new MyHeap(false);
 	}
 	
 	private void balance() {
@@ -20,7 +20,7 @@ public class MedHeap {
 		}
 	}
 	
-	public void add(Integer i) {
+	public void add(int i) {
 		if (getSize() == 0) {
 			lower.add(i);
 		}
@@ -36,6 +36,7 @@ public class MedHeap {
 		}
 	}
 	
+	/*
 	//Don't know what to do, so just removing the median
 	public Double remove() {
 		Double res;
@@ -55,8 +56,9 @@ public class MedHeap {
 		balance();
 		return res;
 	}
+	*/
 	
-	public Double getMedian() {
+	public double getMedian() {
 		if (lower.getSize() == higher.getSize()) {
 			return (lower.peek() + higher.peek()) / 2.0;
 		}
@@ -69,7 +71,8 @@ public class MedHeap {
 	public int getSize() { return lower.getSize() + higher.getSize(); }
 	
 	public static void main(String[] args) {
-		MedHeap m = new MedHeap();
+		RunningMedian m = new RunningMedian();
+		/*
 		m.add(3);
 		System.out.println(m.getMedian());
 		
@@ -82,7 +85,7 @@ public class MedHeap {
 		m.add(-1);
 		System.out.println(m.getMedian());
 		
-		m = new MedHeap();
+		m = new RunningMedian();
 		m.add(0);
 		System.out.println(m.getMedian());
 		
@@ -91,7 +94,12 @@ public class MedHeap {
 		
 		m.add(1);
 		System.out.println(m.getMedian());
-		
+		*/
+		if (args.length < 1) System.exit(1);
+		for (String s : args) {
+			m.add(Integer.parseInt(s));
+		}
+		System.out.println(m.getMedian());
 		/*m.add(-1);
 		System.out.println(m.getMedian());*/
 	}

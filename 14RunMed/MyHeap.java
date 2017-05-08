@@ -1,14 +1,14 @@
-public class MyHeapCopy {
+public class MyHeap {
 	private Integer[] heap;
 	private int size;
 	private int pos;
 	private boolean isMax;
 	
-	public MyHeapCopy() {
+	public MyHeap() {
 		this(true);
 	}
 	
-	public MyHeapCopy(boolean b) {
+	public MyHeap(boolean b) {
 		heap = new Integer[2];
 		isMax = b;
 		pos = 1;
@@ -138,7 +138,7 @@ public class MyHeapCopy {
 	
 	public static void main(String[] args) {
 		
-		MyHeapCopy m = new MyHeapCopy(false);
+		MyHeap m = new MyHeap(false);
 		System.out.println(m);
 		m.add(3);
 		System.out.println(m);
