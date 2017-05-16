@@ -28,12 +28,16 @@ public class Location implements Comparable<Location> {
 		
 		int otherDist = other.distToGoal + 
 			(aStar ? other.previous.distToStart : 0);
+		
+		System.out.println(thisDist + " " + otherDist);
 		return thisDist - otherDist;
 	}
 	
 	public static void main(String[] args) {
 		Location a = new Location(0, 0, null, 0, 5);
-		Location b = new Location(0, 0, a, 0, 5);
-		Location c = new Location(0, 0, null, 0, 5);
+		Location b = new Location(0, 0, a, 0, 6, true);
+		Location c = new Location(0, 0, null, 1, 3);
+		Location d = new Location(0, 0, c, 1, 4, true);
+		System.out.println(b.compareTo(d));
 	}
 }
