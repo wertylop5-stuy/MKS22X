@@ -38,6 +38,11 @@ public class Location implements Comparable<Location> {
 		return "(" + row + " " + col + ")";
 	}
 	
+	public int getRow() {return row;}
+	public int getCol() {return col;}
+	public int getDistStart() {return distToStart;}
+	public int getDistGoal() {return distToGoal;}
+	
 	//Manhattan distance
 	public static int manDist(Location a, Location b) {
 		return 	Math.abs(a.row - b.row) +
