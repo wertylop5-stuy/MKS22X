@@ -137,6 +137,8 @@ public class PriorityQueue {
 		return res + "]";
 	}
 	
+	public int size() {return heap.length;}
+	
 	public static void main(String[] args) {
 		PriorityQueue p = new PriorityQueue(false);
 		p.add(new Location(0, 0, null, 3, 4));

@@ -84,6 +84,10 @@ public class Maze{
     //startr,startc
     //endr,endc
     //you must initialize the Location start/end now!
+	start = new Location(startr, startc, null,
+		0, Location.manDist(startr, startc, endr, endc));
+	end = new Location(endr, endc, null, 
+		Location.manDist(startr, startc, endr, endc), 0);
   }
 
   public String toString(){
@@ -133,5 +137,16 @@ public class Maze{
         ans += line+color(37,40)+"\n";
     }
     return ans;
+  }
+  
+  public Location getStart() {return start;}
+  public Location getEnd() {return end;}
+  
+  public char getChar(int row, int col) {
+	  return maze[row][col];
+  }
+  
+  public void setChar(char c, int row, int col) {
+	  maze[row][col] = c;
   }
 }

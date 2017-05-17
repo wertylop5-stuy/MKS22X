@@ -36,13 +36,26 @@ public class Location implements Comparable<Location> {
 	@Override
 	public String toString() {
 		return "(" + row + " " + col + ")";
-	} 
+	}
+	
+	//Manhattan distance
+	public static int manDist(Location a, Location b) {
+		return 	Math.abs(a.row - b.row) +
+				Math.abs(a.col - b.col);
+	}
+	
+	//(row, col) (a, c) and (b, d)
+	public static int manDist(int a, int b, int c, int d) {
+		return 	Math.abs(a - c) +
+				Math.abs(b - d);
+	}
 	
 	public static void main(String[] args) {
-		Location a = new Location(0, 0, null, 0, 5);
-		Location b = new Location(0, 0, a, 0, 6, true);
+		Location a = new Location(1, 1, null, 0, 5);
+		Location b = new Location(1, 4, a, 0, 6, true);
 		Location c = new Location(0, 0, null, 1, 3);
 		Location d = new Location(0, 0, c, 1, 4, true);
 		System.out.println(b.compareTo(d));
+		System.out.println(manDist(a, b));
 	}
 }
