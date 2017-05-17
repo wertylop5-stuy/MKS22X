@@ -23,17 +23,25 @@ public class MazeSolver {
 			case 3:
 				f = new FrontierPriorityQueue();
 				f.add(board.getStart());
-				
+				System.out.println(f.size());
 				while (f.size() > 0) {
-					getNextSpots(f);
+					//System.out.println(f.size());
+					board.clearTerminal();
+					System.out.println(
+						Maze.colorize(board.toString()));
+					if (getNextSpots(f)) break;
+					Maze.wait(64);
 				}
 			break;
 		}
 	}
 	
-	private void getNextSpots(Frontier f) {
+	private boolean getNextSpots(Frontier f) {
 		Location l = f.next();
 		System.out.println(l);
+		board.set(l.getRow(), l.getCol(), '.');
+		if (l.equals(board.getEnd())) return true;
+		
 		int tRow;
 		int tCol;
 		//Access the surrounding squares
@@ -41,18 +49,25 @@ public class MazeSolver {
 			tRow = l.getRow() + d.getRow();
 			tCol = l.getCol() + d.getCol();
 			if(board.get(tRow, tCol) == ' ') {
-				System.out.println("("+tRow+", "+tCol+")");
+				//System.out.println("("+tRow+", "+tCol+")");
 				f.add(new Location(tRow, tCol, l,
 					l.getDistStart()+1,
 					Location.manDist(
-						l, board.getEnd()
-					)));
+						tRow, tCol,
+						board.getEnd().getRow(),
+						board.getEnd().getCol()),
+					true
+				));
+				board.set(tRow, tCol, '?');
 			}
 		}
+		return false;
 	}
 	
 	public static void main(String[] args) {
-		MazeSolver m = new MazeSolver("Maze.txt");
+		if (args.length < 1) System.exit(1);
+		MazeSolver m = new MazeSolver(args[0]+".txt");
 		m.solve(3);
+		System.out.println(Maze.colorize(m.board.toString()));
 	}
 }

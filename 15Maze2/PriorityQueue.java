@@ -137,14 +137,32 @@ public class PriorityQueue {
 		return res + "]";
 	}
 	
-	public int size() {return heap.length;}
+	public int size() {
+		/*int size = 0;
+		//System.out.print(heap[0] + " ");
+		for (	int x = 1;
+				x < heap.length && heap[x] != null;
+				x++) {
+			//System.out.print(heap[x] + " ");
+			size++;
+		}*/
+		//System.out.println();
+		return size;
+	}
 	
 	public static void main(String[] args) {
 		PriorityQueue p = new PriorityQueue(false);
+		System.out.println(p.size());
 		p.add(new Location(0, 0, null, 3, 4));
+		System.out.println(p.size());
 		p.add(new Location(1, 1, null, 5, 6));
+		System.out.println(p.size());
 		p.add(new Location(2, 2, null, 2, 2));
+		System.out.println(p.size());
 		p.add(new Location(-4, -1, null, 3, 1));
+		System.out.println(p.size());
+		p.remove();
+		System.out.println(p.size());
 		System.out.println(p);
 	}
 }

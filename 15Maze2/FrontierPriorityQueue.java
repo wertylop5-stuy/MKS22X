@@ -2,6 +2,7 @@ public class FrontierPriorityQueue implements Frontier {
 	private PriorityQueue pq;
 	
 	public FrontierPriorityQueue () {
+		pq = new PriorityQueue(false);
 	}
 	
 	@Override

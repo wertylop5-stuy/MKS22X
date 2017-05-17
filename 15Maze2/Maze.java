@@ -19,6 +19,13 @@ public class Maze{
     return end;
   }
 
+  public static void wait(int millis){
+    try {
+      Thread.sleep(millis);
+    }
+    catch (InterruptedException e) {
+    }
+  }
   private static String go(int x,int y){
     return ("\033[" + x + ";" + y + "H");
   }

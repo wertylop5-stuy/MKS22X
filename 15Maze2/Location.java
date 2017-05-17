@@ -29,13 +29,20 @@ public class Location implements Comparable<Location> {
 		int otherDist = other.distToGoal + 
 			(aStar ? other.previous.distToStart : 0);
 		
-		//System.out.println(thisDist + " " + otherDist);
+		System.out.println(thisDist + " " + otherDist);
 		return thisDist - otherDist;
 	}
 	
 	@Override
 	public String toString() {
-		return "(" + row + " " + col + ")";
+		return "(" + row + " " + col + " " +
+			distToStart + " " + distToGoal + ")";
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		Location o = (Location)other;
+		return row == o.row && col == o.col;
 	}
 	
 	public int getRow() {return row;}
