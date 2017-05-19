@@ -26,7 +26,7 @@ public class MazeSolver {
 			break;
 			
 			case 1:
-				
+				f = new QueueFrontier();
 			break;
 			
 			case 2:
@@ -50,7 +50,7 @@ public class MazeSolver {
 		if (f == null) System.exit(1);
 		
 		f.add(board.getStart());
-		System.out.println(f.size());
+		//System.out.println(f.size());
 		while (f.size() > 0) {
 			//System.out.println(f.size());
 			board.clearTerminal();
@@ -67,7 +67,16 @@ public class MazeSolver {
 		Location l = f.next();
 		System.out.println(l);
 		board.set(l.getRow(), l.getCol(), '.');
-		if (l.equals(board.getEnd())) return true;
+		if (l.equals(board.getEnd())) {
+			board.set(l.getRow(), l.getCol(), '@');
+			Location counter = l.getPrevious();
+			while(counter != null) {
+				board.set(counter.getRow(), counter.getCol(), '@');
+				counter = counter.getPrevious();
+			}
+			
+			return true;
+		}
 		
 		int tRow;
 		int tCol;

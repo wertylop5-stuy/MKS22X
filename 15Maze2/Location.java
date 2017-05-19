@@ -29,7 +29,7 @@ public class Location implements Comparable<Location> {
 		int otherDist = other.distToGoal + 
 			(aStar ? other.previous.distToStart : 0);
 		
-		System.out.println(thisDist + " " + otherDist);
+		//System.out.println(thisDist + " " + otherDist);
 		return thisDist - otherDist;
 	}
 	
@@ -49,6 +49,7 @@ public class Location implements Comparable<Location> {
 	public int getCol() {return col;}
 	public int getDistStart() {return distToStart;}
 	public int getDistGoal() {return distToGoal;}
+	public Location getPrevious() {return previous;}
 	
 	//Manhattan distance
 	public static int manDist(Location a, Location b) {
