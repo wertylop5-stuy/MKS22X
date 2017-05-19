@@ -22,29 +22,14 @@ public class MazeSolver {
 		switch(style) {
 			case 0:
 				f = new StackFrontier();
-				
 			break;
 			
 			case 1:
 				f = new QueueFrontier();
 			break;
 			
-			case 2:
+			case 2: case 3:
 				f = new FrontierPriorityQueue();
-			break;
-			
-			case 3:
-				f = new FrontierPriorityQueue();
-				/*f.add(board.getStart());
-				System.out.println(f.size());
-				while (f.size() > 0) {
-					//System.out.println(f.size());
-					board.clearTerminal();
-					System.out.println(
-						Maze.colorize(board.toString()));
-					if (getNextSpots(f, true)) break;
-					Maze.wait(64);
-				}*/
 			break;
 		}
 		if (f == null) System.exit(1);
